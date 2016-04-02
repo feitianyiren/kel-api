@@ -1,4 +1,5 @@
 Django
 gunicorn
 requests
+mysqlclient  # only for testing due to simplicity on GCP (move to PostgreSQL ASAP)
 git+https://github.com/pinax/pinax-api.git@refactor#egg=pinax-api
