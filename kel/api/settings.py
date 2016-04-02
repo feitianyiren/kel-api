@@ -13,5 +13,9 @@ MIDDLEWARE_CLASSES = [
     "django.middleware.csrf.CsrfViewMiddleware"
 ]
 INSTALLED_APPS = [
+    "pinax.api",
     "kel.api",
 ]
+KEL = {
+    "IDENTITY_URL": os.environ["KEL_IDENTITY_URL"]
+}

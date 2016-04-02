@@ -1,2 +1,4 @@
 Django
 gunicorn
+requests
+git+https://github.com/pinax/pinax-api.git@refactor#egg=pinax-api
