@@ -4,5 +4,5 @@ else
     BUILD_TAG="git-${TRAVIS_COMMIT:0:8}"
 fi
 
-BUILDER_IMAGE="quay.io/kelproject/bundle-builder:git-1e209f97"
+BUILDER_IMAGE="quay.io/kelproject/bundle-builder:git-982ca4d1"
 BUNDLE_FILE="api-$BUILD_TAG.tgz"
