@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 from django.db import transaction
-from django.utils import timezone
+from django.utils import six, timezone
 
 import requests
 
@@ -15,14 +15,16 @@ logger = logging.getLogger(__name__)
 
 
 def get_authorization_header(request):
-    return request.META.get("HTTP_AUTHORIZATION", b"")
+    auth = request.META.get("HTTP_AUTHORIZATION", b"")
+    if isinstance(auth, six.string_types):
+        auth = auth.encode("iso-8859-1")
+    return auth
 
 
 class KelIdentityAuthentication:
 
     def authenticate(self, request):
         auth = get_authorization_header(request).split()
-        logger.info("checking Authorization header (value={!r})".format(auth))
         if not auth or auth[0].lower() != b"bearer":
             return None
         if len(auth) == 1:
