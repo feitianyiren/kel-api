@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
@@ -9,6 +11,9 @@ from pinax.api.exceptions import AuthenticationFailed
 from .models import User
 
 
+logger = logging.getLogger(__name__)
+
+
 def get_authorization_header(request):
     return request.META.get("HTTP_AUTHORIZATION", b"")
 
@@ -16,6 +21,7 @@ def get_authorization_header(request):
 class KelIdentityAuthentication:
 
     def authenticate(self, request):
+        logger.info("authenticating request")
         auth = get_authorization_header(request).split()
         if not auth or auth[0].lower() != b"bearer":
             return None
@@ -36,6 +42,7 @@ class KelIdentityAuthentication:
         """
         Lookup token on identity service and create/update local user.
         """
+        logger.info("checking identity server {}".format(settings.KEL["IDENTITY_URL"]))
         params = {"access_token": token}
         resp = requests.get("{}/tokeninfo/".format(settings.KEL["IDENTITY_URL"]), params=params)
         if not resp.ok:
