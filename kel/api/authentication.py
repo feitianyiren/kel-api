@@ -21,8 +21,8 @@ def get_authorization_header(request):
 class KelIdentityAuthentication:
 
     def authenticate(self, request):
-        logger.info("authenticating request")
         auth = get_authorization_header(request).split()
+        logger.info("checking Authorization header (value={!r})".format(auth))
         if not auth or auth[0].lower() != b"bearer":
             return None
         if len(auth) == 1:
