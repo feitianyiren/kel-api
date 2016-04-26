@@ -56,8 +56,8 @@ Project follows the `Contributor Covenant Code of Conduct`_.
 .. _Contributor Covenant Code of Conduct: http://contributor-covenant.org/version/1/4/
 
 
-Commerical Support
+Commercial Support
 ------------------
 
-Commerical support for Kel is avaialble through Eldarion, please contact
+Commercial support for Kel is avaialble through Eldarion, please contact
 info@eldarion.com.
