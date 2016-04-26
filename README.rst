@@ -24,9 +24,10 @@ components and tools on top of Kubernetes that help developers manage their
 application infrastructure. Kel builds on Eldarion's 7+ years experience running
 one of the leading Python and Django PaaSes.
 
-For more information about Kel, see kelproject.com, follow us on Twitter
+For more information about Kel, see `kelproject.com`_, follow us on Twitter
 `@projectkel`_, and join our `Slack team`_.
 
+.. _kelproject.com: http://kelproject.com/
 .. _@projectkel: https://twitter.com/projectkel
 .. _Slack team: http://slack.kelproject.com/
 
