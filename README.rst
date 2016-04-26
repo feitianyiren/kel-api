@@ -24,6 +24,12 @@ components and tools on top of Kubernetes that help developers manage their
 application infrastructure. Kel builds on Eldarion's 7+ years experience running
 one of the leading Python and Django PaaSes.
 
+For more information about Kel, see kelproject.com, follow us on Twitter
+`@projectkel`_, and join our `Slack team`_.
+
+.. _@projectkel: https://twitter.com/projectkel
+.. _Slack team: http://slack.kelproject.com/
+
 
 License
 -------
@@ -49,12 +55,6 @@ Project follows the `Contributor Covenant Code of Conduct`_.
 
 .. _Contributor Covenant Code of Conduct: http://contributor-covenant.org/version/1/4/
 
-
-Kel Project Blog and Twitter
-----------------------------
-
-For updates and news regarding the Kel Project, please follow us on Twitter at
-@projectkel and check out our blog http://blog.kelproject.com.
 
 Commerical Support
 ------------------
