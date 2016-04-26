@@ -27,7 +27,9 @@ Contribute
 Code of Conduct
 ----------------
 
-In order to foster a kind, inclusive, and harassment-free community, the Kel Project has a code of conduct, which can be found here http://pinaxproject.com/pinax/code_of_conduct/. We ask you to treat everyone as a smart human programmer that shares an interest in Kubernetes, DevOps and Kel.
+In order to foster a kind, inclusive, and harassment-free community, the Kel Project follows the `Contributor Covenant Code of Conduct`_.
+
+.. _Contributor Covenant Code of Conduct: http://contributor-covenant.org/version/1/4/
 
 
 Kel Project Blog and Twitter
