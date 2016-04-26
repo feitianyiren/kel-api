@@ -10,7 +10,7 @@ Kel API
 .. image:: https://img.shields.io/badge/license-apache-blue.svg
 
 
-a RESTful API built with Django / Pinax, adhering to the JSON:API specification.
+RESTful API built with Django / Pinax, adhering to the JSON:API specification.
 It is a part of the Kel Project.
 
 
