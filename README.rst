@@ -55,3 +55,9 @@ Kel Project Blog and Twitter
 
 For updates and news regarding the Kel Project, please follow us on Twitter at
 @projectkel and check out our blog http://blog.kelproject.com.
+
+Commerical Support
+------------------
+
+Commerical support for Kel is avaialble through Eldarion, please contact
+info@eldarion.com.
