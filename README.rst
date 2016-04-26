@@ -25,11 +25,18 @@ application infrastructure. Kel builds on 7+ years experience running one of the
 leading Python and Django PaaSes.
 
 
+License
+-------
+
+The code in this project is licensed under the Apache License, version 2.0
+(included in this repository under LICENSE).
+
+
 Contributing
 ------------
 
 By making a contribution to this project, you are agreeing to the `Developer
-Certificate of Origin v1.1`_ (also included in repository under DCO.txt).
+Certificate of Origin v1.1`_ (also included in this repository under DCO.txt).
 
 .. _Developer Certificate of Origin v1.1: http://developercertificate.org
 
