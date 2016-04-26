@@ -25,8 +25,8 @@ application infrastructure. Kel builds on 7+ years experience running one of the
 leading Python and Django PaaSes.
 
 
-Contribute
-----------
+Contributing
+------------
 
 By making a contribution to this project, you are agreeing to the `Developer
 Certificate of Origin v1.1`_ (also included in repository under DCO.txt).
