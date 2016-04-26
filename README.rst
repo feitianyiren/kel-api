@@ -21,8 +21,8 @@ Kel is an open source Platform as a Service (PaaS) from Eldarion, Inc. that
 makes it easy to manage web application deployment and hosting through the
 entire lifecycle from development through testing to production. It adds
 components and tools on top of Kubernetes that help developers manage their
-application infrastructure. Kel builds on 7+ years experience running one of the
-leading Python and Django PaaSes.
+application infrastructure. Kel builds on Eldarion's 7+ years experience running
+one of the leading Python and Django PaaSes.
 
 
 License
