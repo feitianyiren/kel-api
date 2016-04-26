@@ -29,7 +29,7 @@ Contribute
 ----------
 
 By making a contribution to this project, you are agreeing to the `Developer
-Certificate of Origin v1.1`_.
+Certificate of Origin v1.1`_ (also included in repository under DCO.txt).
 
 .. _Developer Certificate of Origin v1.1: http://developercertificate.org
 
