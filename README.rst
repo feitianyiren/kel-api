@@ -15,6 +15,7 @@ It is a part of the Kel Project.
 
 
 .. image:: https://storage.googleapis.com/kel-assets/kel_full-02_200.jpg
+   :target: http://kelproject.com/
 
 Kel is an open source Platform as a Service (PaaS) from Eldarion, Inc. that
 makes it easy to manage web application deployment and hosting through the
