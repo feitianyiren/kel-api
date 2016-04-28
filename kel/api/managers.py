@@ -1,7 +1,8 @@
 from django.db.models.manager import Manager
 
 from .querysets import (
-    ResourceGroupQuerySet
+    ResourceGroupQuerySet,
+    SiteQuerySet
 )
 
 
@@ -12,4 +13,8 @@ class UserManager(Manager):
 
 
 class ResourceGroupManager(Manager.from_queryset(ResourceGroupQuerySet)):
+    pass
+
+
+class SiteManager(Manager.from_queryset(SiteQuerySet)):
     pass

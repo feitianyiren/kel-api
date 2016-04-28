@@ -15,5 +15,5 @@ def ensure_user_belongs(attr, check_methods=None):
 
     def check(request, view):
         if view.requested_method in check_methods:
-            return request.user in getattr(view, attr).users()
+            return request.user in getattr(view, attr).members()
     return check

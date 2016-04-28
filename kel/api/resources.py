@@ -1,6 +1,6 @@
 from pinax import api
 
-from .models import ResourceGroup
+from .models import ResourceGroup, Site
 
 
 @api.register
@@ -26,3 +26,18 @@ class ResourceGroupResource(api.Resource):
         obj = super(ResourceGroupResource, self).create(**kwargs)
         obj.set_owner(owner)
         return obj
+
+
+@api.register
+class SiteResource(api.Resource):
+
+    api_type = "sites"
+    model = Site
+    attributes = [
+        "name",
+        "created",
+    ]
+    relationships = {
+        "instances": api.Relationship("instance", collection=True),
+        "services": api.Relationship("services", collection=True),
+    }

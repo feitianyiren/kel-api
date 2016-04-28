@@ -11,6 +11,7 @@ urlpatterns = [
     url(r"^v1/self/", include(
         list(itertools.chain.from_iterable([
             endpoints.ScopedResourceGroupEndpointSet.as_urls(),
+            endpoints.ScopedSiteEndpointSet.as_urls(),
         ]))
     ))
 ]

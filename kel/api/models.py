@@ -4,7 +4,8 @@ from django.utils import timezone
 
 from .managers import (
     UserManager,
-    ResourceGroupManager
+    ResourceGroupManager,
+    SiteManager
 )
 
 
@@ -46,6 +47,9 @@ class User(models.Model):
     def resource_groups(self):
         return ResourceGroup.objects.for_user(self)
 
+    def sites(self):
+        return Site.objects.for_user(self)
+
 
 class ResourceGroup(models.Model):
 
@@ -68,7 +72,7 @@ class ResourceGroup(models.Model):
         return self.name
 
     def set_owner(self, owner):
-        ResourceGroupUser.objects.get_or_create(
+        ResourceGroupMembership.objects.get_or_create(
             resource_group=self,
             user=owner,
             defaults={
@@ -76,20 +80,16 @@ class ResourceGroup(models.Model):
             },
         )
 
-    def users(self):
-        us = []
-        for membership in ResourceGroupUser.objects.filter(resource_group=self):
-            user = membership.user
-            user.role = membership.role
-            us.append(user)
-        return us
-
-    @property
-    def sites(self):
-        return ResourceGroupUser.objects.none()
+    def members(self):
+        member_set = set()
+        for membership in ResourceGroupMembership.objects.filter(resource_group=self):
+            member = membership.user
+            member.role = membership.role
+            member_set.add(member)
+        return member_set
 
 
-class ResourceGroupUser(models.Model):
+class ResourceGroupMembership(models.Model):
 
     resource_group = models.ForeignKey(ResourceGroup)
     user = models.ForeignKey(User)
@@ -97,3 +97,47 @@ class ResourceGroupUser(models.Model):
 
     class Meta:
         unique_together = [("resource_group", "user")]
+
+
+class Site(models.Model):
+
+    resource_group = models.ForeignKey(ResourceGroup, related_name="sites")
+    name = models.CharField(
+        max_length=100,
+        validators=[
+            validators.RegexValidator(
+                validators._lazy_re_compile(r"^[a-zA-Z0-9_-]+$"),
+                "Invalid name. (hint: ^[a-zA-Z0-9_-]+$)",
+            ),
+        ]
+    )
+    created = models.DateTimeField(default=timezone.now)
+
+    objects = SiteManager()
+
+    class Meta:
+        unique_together = [("resource_group", "name")]
+
+    def members(self):
+        member_set = set()
+        for member in self.resource_group.members():
+            member.role = {
+                "admin": "admin",
+                "technical": "ops",
+            }[member.role]
+            member_set.add(member)
+        for membership in SiteMembership.objects.filter(site=self):
+            member = membership.user
+            member.role = membership.role
+            member_set.add(member)
+        return member_set
+
+
+class SiteMembership(models.Model):
+
+    site = models.ForeignKey(Site)
+    user = models.ForeignKey(User)
+    role = models.CharField(max_length=50)
+
+    class Meta:
+        unique_together = [("site", "user")]
