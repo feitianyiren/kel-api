@@ -8,35 +8,6 @@ from .permissions import (
 from .resources import ResourceGroupResource
 
 
-class ResourceGroupSiteCollectionRelationship(api.RelationshipEndpointSet):
-
-    middleware = {
-        "authentication": [
-            KelIdentityAuthentication(),
-        ],
-        "permissions": {
-            ensure_user_belongs("resource_group"),
-        },
-    }
-
-    def get_queryset(self):
-        return self.request.user.resource_groups()
-
-    def prepare(self):
-        self.resource_group = self.get_object_or_404(
-            self.get_queryset(),
-            name=self.kwargs["resource_group"],
-        )
-
-    def retrieve(self, request, *args, **kwargs):
-        qs = (
-            self.request.user.sites()
-            .filter(resource_group=self.resource_group)
-            .order_by("resource_group__name", "name")
-        )
-        return self.render(api.registry["site"].from_queryset(qs))
-
-
 @api.bind(resource=ResourceGroupResource)
 class ScopedResourceGroupEndpointSet(api.ResourceEndpointSet):
 
@@ -56,9 +27,6 @@ class ScopedResourceGroupEndpointSet(api.ResourceEndpointSet):
             ensure_token_match("abc", check_methods=["create"]),
             ensure_user_belongs("resource_group", check_methods=["retrieve", "update", "destroy"]),
         },
-    }
-    relationships = {
-        "sites": ResourceGroupSiteCollectionRelationship,
     }
 
     def get_queryset(self):
