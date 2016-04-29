@@ -10,7 +10,6 @@ class ResourceGroupResource(api.Resource):
     model = ResourceGroup
     attributes = [
         "name",
-        "personal",
         "created",
     ]
     relationships = {
@@ -41,3 +40,7 @@ class SiteResource(api.Resource):
         "instances": api.Relationship("instance", collection=True),
         "services": api.Relationship("services", collection=True),
     }
+
+    @property
+    def id(self):
+        return self.obj.name

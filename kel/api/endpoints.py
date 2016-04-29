@@ -5,7 +5,10 @@ from .permissions import (
     ensure_token_match,
     ensure_user_belongs
 )
-from .resources import ResourceGroupResource, SiteResource
+from .resources import (
+    ResourceGroupResource,
+    SiteResource
+)
 
 
 @api.bind(resource=ResourceGroupResource)

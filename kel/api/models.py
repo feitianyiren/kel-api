@@ -36,14 +36,6 @@ class User(models.Model):
     def is_authenticated(self):
         return True
 
-    @property
-    def resource_group(self):
-        qs = ResourceGroup.objects.filter(
-            resourcegroupuser__user=self,
-            personal=True,
-        )
-        return next(iter(qs), None)
-
     def resource_groups(self):
         return ResourceGroup.objects.for_user(self)
 
@@ -63,7 +55,6 @@ class ResourceGroup(models.Model):
             ),
         ]
     )
-    personal = models.BooleanField(default=False)
     created = models.DateTimeField(default=timezone.now)
 
     objects = ResourceGroupManager()
