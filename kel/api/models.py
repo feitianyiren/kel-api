@@ -42,6 +42,12 @@ class User(models.Model):
     def sites(self):
         return Site.objects.for_user(self)
 
+    def services(self):
+        return Service.objects.filter(site__in=self.sites())
+
+    def instances(self):
+        return Instance.objects.filter(site__in=self.sites())
+
 
 class ResourceGroup(models.Model):
 
@@ -132,3 +138,40 @@ class SiteMembership(models.Model):
 
     class Meta:
         unique_together = [("site", "user")]
+
+
+class Service(models.Model):
+
+    site = models.ForeignKey(Site, related_name="services")
+    name = models.CharField(
+        max_length=50,
+        validators=[
+            validators.RegexValidator(
+                validators._lazy_re_compile(r"^[a-zA-Z0-9-]+$"),
+                "Invalid name. (hint: ^[a-zA-Z0-9-]+$)",
+            ),
+        ]
+    )
+    created = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = [("site", "name")]
+
+
+class Instance(models.Model):
+
+    site = models.ForeignKey(Site, related_name="instances")
+    label = models.CharField(
+        max_length=50,
+        validators=[
+            validators.RegexValidator(
+                validators._lazy_re_compile(r"^[a-zA-Z0-9-]+$"),
+                "Invalid label. (hint: ^[a-zA-Z0-9-]+$)",
+            ),
+        ]
+    )
+    kind = models.CharField(max_length=50)
+    created = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = [("site", "label")]

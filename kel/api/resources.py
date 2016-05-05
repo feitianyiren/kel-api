@@ -1,12 +1,12 @@
 from pinax import api
 
-from .models import ResourceGroup, Site
+from .models import ResourceGroup, Site, Service, Instance
 
 
 @api.register
 class ResourceGroupResource(api.Resource):
 
-    api_type = "resource-group"
+    api_type = "resource-groups"
     model = ResourceGroup
     attributes = [
         "name",
@@ -44,3 +44,54 @@ class SiteResource(api.Resource):
     @property
     def id(self):
         return self.obj.name
+
+    def create(self, **kwargs):
+        resource_group = kwargs.pop("resource_group")
+        self.obj.resource_group = resource_group
+        return super(SiteResource, self).create(**kwargs)
+
+
+@api.register
+class ServiceResource(api.Resource):
+
+    api_type = "services"
+    model = Service
+    attributes = [
+        "name",
+        "created",
+    ]
+    relationships = {
+        "site": api.Relationship("site"),
+    }
+
+    @property
+    def id(self):
+        return self.obj.name
+
+    def create(self, **kwargs):
+        site = kwargs.pop("site")
+        self.obj.site = site
+        return super(ServiceResource, self).create(**kwargs)
+
+
+@api.register
+class InstanceResource(api.Resource):
+
+    api_type = "instances"
+    model = Instance
+    attributes = [
+        "label",
+        "created",
+    ]
+    relationships = {
+        "site": api.Relationship("site"),
+    }
+
+    @property
+    def id(self):
+        return self.obj.label
+
+    def create(self, **kwargs):
+        site = kwargs.pop("site")
+        self.obj.site = site
+        return super(InstanceResource, self).create(**kwargs)

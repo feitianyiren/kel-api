@@ -12,6 +12,8 @@ urlpatterns = [
         list(itertools.chain.from_iterable([
             endpoints.ScopedResourceGroupEndpointSet.as_urls(),
             endpoints.ScopedSiteEndpointSet.as_urls(),
+            endpoints.ScopedServiceEndpointSet.as_urls(),
+            endpoints.ScopedInstanceEndpointSet.as_urls(),
         ]))
     ))
 ]

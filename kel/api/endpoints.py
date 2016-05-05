@@ -7,7 +7,9 @@ from .permissions import (
 )
 from .resources import (
     ResourceGroupResource,
-    SiteResource
+    SiteResource,
+    ServiceResource,
+    InstanceResource
 )
 
 
@@ -98,7 +100,7 @@ class ScopedSiteEndpointSet(api.ResourceEndpointSet):
         )
         if self.requested_method in ["retrieve", "update", "destroy"]:
             self.site = self.get_object_or_404(
-                self.get_queryset(),
+                self.get_queryset().filter(resource_group=self.resource_group),
                 name=self.kwargs["site"],
             )
 
@@ -109,20 +111,148 @@ class ScopedSiteEndpointSet(api.ResourceEndpointSet):
         with self.validate(self.resource_class) as resource:
             resource.save(
                 create_kwargs={
-                    "owner": request.user,
+                    "resource_group": self.resource_group,
                 }
             )
         return self.render_create(resource)
 
     def retrieve(self, request, *args, **kwargs):
-        resource = self.resource_class(self.resource_group)
+        resource = self.resource_class(self.site)
         return self.render(resource)
 
     def update(self, request, *args, **kwargs):
-        with self.validate(self.resource_class, obj=self.resource_group) as resource:
+        with self.validate(self.resource_class, obj=self.site) as resource:
             resource.save()
         return self.render(resource)
 
     def destroy(self, request, *args, **kwargs):
-        self.resource_group.delete()
+        self.site.delete()
+        return self.render_delete()
+
+
+@api.bind(resource=ServiceResource, parent=ScopedSiteEndpointSet)
+class ScopedServiceEndpointSet(api.ResourceEndpointSet):
+
+    url = api.url(
+        base_name="service",
+        base_regex=r"services",
+        lookup={
+            "field": "service",
+            "regex": r"[a-zA-Z0-9_-]+"
+        }
+    )
+    middleware = {
+        "authentication": [
+            KelIdentityAuthentication(),
+        ],
+        "permissions": {
+            ensure_user_belongs("site"),
+        },
+    }
+
+    def get_queryset(self):
+        return self.request.user.services()
+
+    def prepare(self):
+        self.resource_group = self.get_object_or_404(
+            self.request.user.resource_groups(),
+            name=self.kwargs["resource_group"],
+        )
+        self.site = self.get_object_or_404(
+            self.request.user.sites().filter(resource_group=self.resource_group),
+            name=self.kwargs["site"],
+        )
+        if self.requested_method in ["retrieve", "update", "destroy"]:
+            self.service = self.get_object_or_404(
+                self.get_queryset().filter(site=self.site),
+                name=self.kwargs["service"],
+            )
+
+    def list(self, request, *args, **kwargs):
+        return self.render(self.resource_class.from_queryset(self.get_queryset()))
+
+    def create(self, request, *args, **kwargs):
+        with self.validate(self.resource_class) as resource:
+            resource.save(
+                create_kwargs={
+                    "site": self.site,
+                }
+            )
+        return self.render_create(resource)
+
+    def retrieve(self, request, *args, **kwargs):
+        resource = self.resource_class(self.service)
+        return self.render(resource)
+
+    def update(self, request, *args, **kwargs):
+        with self.validate(self.resource_class, obj=self.service) as resource:
+            resource.save()
+        return self.render(resource)
+
+    def destroy(self, request, *args, **kwargs):
+        self.service.delete()
+        return self.render_delete()
+
+
+@api.bind(resource=InstanceResource, parent=ScopedSiteEndpointSet)
+class ScopedInstanceEndpointSet(api.ResourceEndpointSet):
+
+    url = api.url(
+        base_name="instance",
+        base_regex=r"instances",
+        lookup={
+            "field": "instance",
+            "regex": r"[a-zA-Z0-9_-]+"
+        }
+    )
+    middleware = {
+        "authentication": [
+            KelIdentityAuthentication(),
+        ],
+        "permissions": {
+            ensure_user_belongs("site"),
+        },
+    }
+
+    def get_queryset(self):
+        return self.request.user.instances()
+
+    def prepare(self):
+        self.resource_group = self.get_object_or_404(
+            self.request.user.resource_groups(),
+            name=self.kwargs["resource_group"],
+        )
+        self.site = self.get_object_or_404(
+            self.request.user.sites().filter(resource_group=self.resource_group),
+            name=self.kwargs["site"],
+        )
+        if self.requested_method in ["retrieve", "update", "destroy"]:
+            self.instance = self.get_object_or_404(
+                self.get_queryset().filter(site=self.site),
+                name=self.kwargs["service"],
+            )
+
+    def list(self, request, *args, **kwargs):
+        return self.render(self.resource_class.from_queryset(self.get_queryset()))
+
+    def create(self, request, *args, **kwargs):
+        with self.validate(self.resource_class) as resource:
+            resource.save(
+                create_kwargs={
+                    "site": self.site,
+                }
+            )
+        return self.render_create(resource)
+
+    def retrieve(self, request, *args, **kwargs):
+        resource = self.resource_class(self.instance)
+        return self.render(resource)
+
+    def update(self, request, *args, **kwargs):
+        with self.validate(self.resource_class, obj=self.instance) as resource:
+            resource.save()
+        return self.render(resource)
+
+    def destroy(self, request, *args, **kwargs):
+        self.instance.delete()
         return self.render_delete()
