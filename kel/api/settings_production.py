@@ -3,6 +3,12 @@ from .settings import *  # noqa
 import os
 
 
+DEBUG = False
+
+ALLOWED_HOSTS = [
+    os.environ["KEL_CLUSTER_API_HOST"]
+]
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
