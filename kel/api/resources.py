@@ -13,7 +13,7 @@ class ResourceGroupResource(api.Resource):
         "created",
     ]
     relationships = {
-        "sites": api.Relationship("site", collection=True),
+        "sites": api.Relationship("sites", collection=True),
     }
 
     @property
@@ -37,7 +37,7 @@ class SiteResource(api.Resource):
         "created",
     ]
     relationships = {
-        "instances": api.Relationship("instance", collection=True),
+        "instances": api.Relationship("instances", collection=True),
         "services": api.Relationship("services", collection=True),
     }
 
@@ -61,7 +61,7 @@ class ServiceResource(api.Resource):
         "created",
     ]
     relationships = {
-        "site": api.Relationship("site"),
+        "site": api.Relationship("sites"),
     }
 
     @property
