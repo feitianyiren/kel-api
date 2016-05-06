@@ -23,7 +23,7 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["console"],
-            "level": "DEBUG",
+            "level": os.environ["KEL_LOG_LEVEL"],
         },
         "kel.api": {
             "handlers": ["console"],
