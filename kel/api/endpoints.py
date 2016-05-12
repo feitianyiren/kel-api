@@ -91,7 +91,7 @@ class ScopedSiteEndpointSet(api.ResourceEndpointSet):
     }
 
     def get_queryset(self):
-        return self.request.user.sites()
+        return self.request.user.sites().filter(resource_group=self.resource_group)
 
     def prepare(self):
         self.resource_group = self.get_object_or_404(
@@ -151,7 +151,7 @@ class ScopedServiceEndpointSet(api.ResourceEndpointSet):
     }
 
     def get_queryset(self):
-        return self.request.user.services()
+        return self.request.user.services().filter(site=self.site)
 
     def prepare(self):
         self.resource_group = self.get_object_or_404(
@@ -215,7 +215,7 @@ class ScopedInstanceEndpointSet(api.ResourceEndpointSet):
     }
 
     def get_queryset(self):
-        return self.request.user.instances()
+        return self.request.user.instances().filter(site=self.site)
 
     def prepare(self):
         self.resource_group = self.get_object_or_404(
