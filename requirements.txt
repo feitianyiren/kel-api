@@ -3,4 +3,4 @@ dj-database-url
 gunicorn
 requests
 psycopg2
-git+https://github.com/pinax/pinax-api.git@e109884a2ad3439ec27cdc5d00f6ba7761c78df8#egg=pinax-api
+git+https://github.com/pinax/pinax-api.git@9890156fc848fbe8cb0725e4afab7c357f5b9737#egg=pinax-api
