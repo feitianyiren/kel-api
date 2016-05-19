@@ -1,6 +1,7 @@
 from pinax import api
 
 from .authentication import KelIdentityAuthentication
+from .models import Plugin
 from .permissions import (
     ensure_token_match,
     ensure_user_belongs
@@ -46,7 +47,7 @@ class PluginEndpointSet(api.ResourceEndpointSet):
         base_regex=r"plugins",
         lookup={
             "field": "plugin",
-            "regex": r"[a-zA-Z0-9_-]+"
+            "regex": r"\d+"
         }
     )
     middleware = {
@@ -55,10 +56,33 @@ class PluginEndpointSet(api.ResourceEndpointSet):
         ]
     }
 
+    def get_queryset(self):
+        return Plugin.objects.all()
+
+    def prepare(self):
+        if self.requested_method in ["retrieve", "update", "destroy"]:
+            self.plugin = self.get_object_or_404(self.get_queryset(), pk=self.kwargs["plugin"])
+
+    def list(self, request, *args, **kwargs):
+        return self.render(self.resource_class.from_queryset(self.get_queryset()))
+
     def create(self, request, *args, **kwargs):
         with self.validate(self.resource_class) as resource:
             resource.save()
         return self.render_create(resource)
+
+    def retrieve(self, request, *args, **kwargs):
+        resource = self.resource_class(self.resource_group)
+        return self.render(resource)
+
+    def update(self, request, *args, **kwargs):
+        with self.validate(self.resource_class, obj=self.resource_group) as resource:
+            resource.save()
+        return self.render(resource)
+
+    def destroy(self, request, *args, **kwargs):
+        self.plugin.delete()
+        return self.render_delete()
 
 
 @api.bind(resource=ResourceGroupResource)

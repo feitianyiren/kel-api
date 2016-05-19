@@ -31,11 +31,12 @@ class PluginResource(api.Resource):
     model = Plugin
     attributes = [
         "identifier",
+        "manifest",
     ]
 
     @property
     def id(self):
-        return self.obj.identifier
+        return self.obj.pk
 
 
 @api.register
