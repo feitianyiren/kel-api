@@ -44,7 +44,7 @@ def sign(service_account, text):
 def make_storage_signed_url(verb, path, expires, content_type="application/octet-stream", service_account=None, api_url=GCS_API_URL):
     if service_account is None:
         service_account = GoogleServiceAccount.from_env()
-    url = "{}/{}".format(api_url, path)
+    url = "{}{}".format(api_url, path)
     expiration = int(time.mktime((datetime.datetime.utcnow() + expires).timetuple()))
     signature = make_signature(verb, path, expiration, content_type=content_type)
     signed = sign(service_account, signature)

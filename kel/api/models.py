@@ -59,7 +59,7 @@ class Blob(models.Model):
 
     @property
     def path(self):
-        return "{}/{}{}".format(
+        return "/{}/{}{}".format(
             settings.KEL["BLOBSTORE"]["BUCKET"],
             settings.KEL["BLOBSTORE"].get("PATH_PREFIX", ""),
             self.name
