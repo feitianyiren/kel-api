@@ -69,7 +69,7 @@ class Blob(models.Model):
     def url(self):
         if settings.KEL["BLOBSTORE"]["BACKEND"] == "gcp":
             from .backends import gcp
-            return "{}/{}".format(gcp.GCS_API_URL, self.path)
+            return "{}{}".format(gcp.GCS_API_URL, self.path)
 
     def generate_signed_url(self):
         if settings.KEL["BLOBSTORE"]["BACKEND"] == "gcp":
