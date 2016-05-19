@@ -1,5 +1,5 @@
 from pinax import api
-from pinax.resource import resolve_value
+from pinax.api.resource import resolve_value
 
 from .models import Blob, Plugin, ResourceGroup, Site, Service, Instance
 
