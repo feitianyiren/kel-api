@@ -6,11 +6,35 @@ from .permissions import (
     ensure_user_belongs
 )
 from .resources import (
+    BlobResource,
     ResourceGroupResource,
     SiteResource,
     ServiceResource,
     InstanceResource
 )
+
+
+@api.bind(resource=BlobResource)
+class BlobEndpointSet(api.ResourceEndpointSet):
+
+    url = api.url(
+        base_name="blob",
+        base_regex=r"blobs",
+        lookup={
+            "field": "blob",
+            "regex": r"[a-f0-9]+"
+        }
+    )
+    middleware = {
+        "authentication": [
+            api.authentication.Anonymous(),
+        ]
+    }
+
+    def create(self, request, *args, **kwargs):
+        with self.validate(self.resource_class) as resource:
+            resource.save()
+        return self.render_create(resource)
 
 
 @api.bind(resource=ResourceGroupResource)

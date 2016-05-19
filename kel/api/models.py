@@ -1,3 +1,6 @@
+import datetime
+
+from django.conf import settings
 from django.core import validators
 from django.db import models
 from django.utils import timezone
@@ -47,6 +50,39 @@ class User(models.Model):
 
     def instances(self):
         return Instance.objects.filter(site__in=self.sites())
+
+
+class Blob(models.Model):
+
+    name = models.CharField(max_length=128, unique=True)
+    content_type = models.CharField(max_length=150, default="application/octet-stream")
+
+    @property
+    def path(self):
+        return "/{}/{}{}".format(
+            settings.KEL["BLOBSTORE"]["BUCKET"],
+            settings.KEL["BLOBSTORE"].get("PATH_PREFIX", ""),
+            self.name
+        )
+
+    @property
+    def url(self):
+        if settings.KEL["BLOBSTORE"]["BACKEND"] == "gcp":
+            from .backends import gcp
+            return "{}{}".format(gcp.GCS_API_URL, self.path)
+
+    def generate_signed_url(self):
+        if settings.KEL["BLOBSTORE"]["BACKEND"] == "gcp":
+            from .backends import gcp
+            return gcp.make_storage_signed_url(
+                "PUT",
+                self.path,
+                datetime.timedelta(minutes=5),
+                content_type=self.content_type,
+                service_account=gcp.GoogleServiceAccount.from_data(
+                    settings.KEL["BLOBSTORE"]["SERVICE_ACCOUNT"]
+                ),
+            )
 
 
 class ResourceGroup(models.Model):
