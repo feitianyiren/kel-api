@@ -9,6 +9,11 @@ handler404 = "pinax.api.handler404"
 
 urlpatterns = [
     url(r"^$", views.api_index),
+    url(r"^v1/", include(
+        list(itertools.chain.from_iterable([
+            endpoints.BlobEndpointSet.as_urls(),
+        ]))
+    )),
     url(r"^v1/self/", include(
         list(itertools.chain.from_iterable([
             endpoints.ScopedResourceGroupEndpointSet.as_urls(),
