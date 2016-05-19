@@ -38,6 +38,11 @@ class PluginResource(api.Resource):
     def id(self):
         return self.obj.pk
 
+    def set_attr(self, attr, value):
+        # ignore self attr lookup unless explicitly defined here. this is to
+        # workaround identifier being incorrectly found as a setter.
+        setattr(self.obj, attr.obj_attr, value)
+
 
 @api.register
 class ResourceGroupResource(api.Resource):
