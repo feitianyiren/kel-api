@@ -72,11 +72,11 @@ class PluginEndpointSet(api.ResourceEndpointSet):
         return self.render_create(resource)
 
     def retrieve(self, request, *args, **kwargs):
-        resource = self.resource_class(self.resource_group)
+        resource = self.resource_class(self.plugin)
         return self.render(resource)
 
     def update(self, request, *args, **kwargs):
-        with self.validate(self.resource_class, obj=self.resource_group) as resource:
+        with self.validate(self.resource_class, obj=self.plugin) as resource:
             resource.save()
         return self.render(resource)
 
