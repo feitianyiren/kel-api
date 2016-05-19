@@ -1,6 +1,10 @@
+import re
+
 from django.core import validators
 from django.db import models
 from django.utils import timezone
+
+from django.contrib.postgres.fields import JSONField
 
 from .managers import (
     UserManager,
@@ -47,6 +51,29 @@ class User(models.Model):
 
     def instances(self):
         return Instance.objects.filter(site__in=self.sites())
+
+
+class Plugin(models.Model):
+
+    domain_re = r"[a-z0-9]+([-._~][a-z0-9]+)*"
+    name_re = r"[a-z0-9]+([-][a-z0-9]+)*"
+    version_re = r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:(?:\d*[A-Za-z-][0-9A-Za-z-]*|(?:0|[1-9]\d*))\.)*(?:\d*[A-Za-z-][0-9A-Za-z-]*|(?:0|[1-9]\d*))))?(?:\+((?:(?:[0-9A-Za-z-]+)\.)*[0-9A-Za-z-]+))?"
+    identifier_re = re.compile(
+        r"(?P<domain>{domain})/(?P<name>{name}):v(?P<version>{version})".format(
+            domain=domain_re,
+            name=name_re,
+            version=version_re,
+        )
+    )
+
+    identifier = models.CharField(
+        max_length=255,
+        unique=True,
+        validators=[
+            validators.RegexValidator(identifier_re, "Invalid identifier."),
+        ]
+    )
+    manifest = JSONField(default=dict)
 
 
 class ResourceGroup(models.Model):
