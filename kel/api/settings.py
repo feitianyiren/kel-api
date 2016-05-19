@@ -39,5 +39,10 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "api.User"
 
 KEL = {
-    "IDENTITY_URL": os.environ["KEL_IDENTITY_URL"]
+    "IDENTITY_URL": os.environ["KEL_IDENTITY_URL"],
+    "BLOBSTORE": {
+        "BACKEND": os.environ["KEL_BLOBSTORE_BACKEND"],
+        "BUCKET": os.environ["KEL_BLOBSTORE_BUCKET"],
+        "SERVICE_ACCOUNT": os.environ["KEL_BLOBSTORE_SERVICE_ACCOUNT"],
+    }
 }
