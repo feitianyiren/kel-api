@@ -1,4 +1,5 @@
 from pinax import api
+from pinax.resource import resolve_value
 
 from .models import Blob, Plugin, ResourceGroup, Site, Service, Instance
 
@@ -37,6 +38,11 @@ class PluginResource(api.Resource):
     @property
     def id(self):
         return self.obj.pk
+
+    def get_attr(self, attr):
+        # ignore self attr lookup unless explicitly defined here. this is to
+        # workaround identifier being incorrectly found as a setter.
+        return resolve_value(getattr(self.obj, attr.obj_attr))
 
     def set_attr(self, attr, value):
         # ignore self attr lookup unless explicitly defined here. this is to
