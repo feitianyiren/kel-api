@@ -1,6 +1,6 @@
 from pinax import api
 
-from .models import Blob, ResourceGroup, Site, Service, Instance
+from .models import Blob, Plugin, ResourceGroup, Site, Service, Instance
 
 
 @api.register
@@ -22,6 +22,20 @@ class BlobResource(api.Resource):
         obj = super(BlobResource, self).create(**kwargs)
         self.meta["upload_url"] = obj.generate_signed_url()
         return obj
+
+
+@api.register
+class PluginResource(api.Resource):
+
+    api_type = "plugins"
+    model = Plugin
+    attributes = [
+        "identifier",
+    ]
+
+    @property
+    def id(self):
+        return self.obj.identifier
 
 
 @api.register

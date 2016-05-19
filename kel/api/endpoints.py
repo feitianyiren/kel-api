@@ -7,6 +7,7 @@ from .permissions import (
 )
 from .resources import (
     BlobResource,
+    PluginResource,
     ResourceGroupResource,
     SiteResource,
     ServiceResource,
@@ -23,6 +24,29 @@ class BlobEndpointSet(api.ResourceEndpointSet):
         lookup={
             "field": "blob",
             "regex": r"[a-f0-9]+"
+        }
+    )
+    middleware = {
+        "authentication": [
+            api.authentication.Anonymous(),
+        ]
+    }
+
+    def create(self, request, *args, **kwargs):
+        with self.validate(self.resource_class) as resource:
+            resource.save()
+        return self.render_create(resource)
+
+
+@api.bind(resource=PluginResource)
+class PluginEndpointSet(api.ResourceEndpointSet):
+
+    url = api.url(
+        base_name="plugin",
+        base_regex=r"plugins",
+        lookup={
+            "field": "plugin",
+            "regex": r"[a-zA-Z0-9_-]+"
         }
     )
     middleware = {

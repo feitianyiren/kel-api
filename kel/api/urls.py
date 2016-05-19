@@ -12,6 +12,7 @@ urlpatterns = [
     url(r"^v1/", include(
         list(itertools.chain.from_iterable([
             endpoints.BlobEndpointSet.as_urls(),
+            endpoints.PluginEndpointSet.as_urls(),
         ]))
     )),
     url(r"^v1/self/", include(
